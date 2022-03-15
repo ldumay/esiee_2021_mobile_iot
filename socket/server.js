@@ -1,7 +1,7 @@
 var SerialPort = require('serialport');
 var xbee_api = require('xbee-api');
 var C = xbee_api.constants;
-//var storage = require("./storage") //-Liaison cloud
+var storage = require("./storage") //-Liaison cloud
 require('dotenv').config()
 
 //- - [ Config Env ] - -
@@ -79,7 +79,7 @@ xbeeAPI.parser.on("data", function (frame) {
 			break;
 		case C.FRAME_TYPE.NODE_IDENTIFICATION:
 			console.log("NODE_IDENTIFICATION");
-			storage.registerSensor(frame.remote64);
+			storage.registerWeatherStation(frame.remote64);
 			break;
 		case C.FRAME_TYPE.ZIGBEE_IO_DATA_SAMPLE_RX:
 			console.log("ZIGBEE_IO_DATA_SAMPLE_RX")
@@ -100,7 +100,7 @@ xbeeAPI.parser.on("data", function (frame) {
 			};
 			xbeeAPI.builder.write(frame_obj); //--> send AT Request
 
-			// storage.registerSample(frame.remote64,frame.analogSamples.AD0 )
+			 storage.registerWeatherStationSample(frame.remote64,frame.digitalSamples)
 
 			break;
 		case C.FRAME_TYPE.AT_COMMAND_RESPONSE:
