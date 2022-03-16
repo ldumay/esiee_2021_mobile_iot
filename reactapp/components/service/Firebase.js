@@ -1,5 +1,5 @@
 import { FirebaseError, initializeApp } from 'firebase/app';
-import { getFirestore, collection, collectionGroup, getDocs } from 'firebase/firestore/lite';
+import { getFirestore, collection, collectionGroup, getDocs, query, limit, orderBy } from 'firebase/firestore/lite';
 // Follow this pattern to import other Firebase services
 // import { } from 'firebase/<service>';
 
@@ -22,14 +22,23 @@ class FirebaseService {
 	 * Get a list of cities from your database 
 	 */
 	static async getWeatherStatus() {
-		let stationCol = collection(firestore, '/WeatherStation');
+		let stationPath = 'WeatherStation'
+		let stationCol = collection(firestore, stationPath);
 		let stationSnapshot = await getDocs(stationCol);
 		let stationList = stationSnapshot.docs.map(station => station.data());
-		console.log(stationList);
+		console.log('list', stationList);
+		let dataList = Array();
 		stationList.forEach((station) => {
-			console.log(station);
+			let stationDataCol = collection(firestore, stationPath, station.address, 'PhotovoltaicSample');
+			let q = query(stationDataCol, orderBy('date', 'desc'), limit(1));
+			getDocs(q).then((stationDataSnapshot) => {
+				console.log('datasnap', stationDataSnapshot.docs);
+				let stationDataList = stationDataSnapshot.docs.map(value => value.data());
+				dataList.push(stationDataList);
+			}).finally(() => {
+				console.log(dataList);
+			});
 		});
-
 	}
 }
 export default FirebaseService;
