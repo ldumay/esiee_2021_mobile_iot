@@ -78,21 +78,36 @@ xbeeAPI.parser.on("data", function (frame) {
 			let arduino_data = String.fromCharCode.apply(null, frame.data);
 			console.log(">> ZIGBEE_RECEIVE_PACKET >", arduino_data);
 			// console.log(arduino_data);
-
-			let wind_power_sensor = "";
-			let temperature_sensor ="";
-			let temperature_sensor_value ="";
-			let moisture_sensor ="";
-			let moisture_sensor_value ="";
 			
 			//split the character string
 			const sensor_data = arduino_data.split('&');
 			//possition 0 = potentiomettre
-			wind_power_sensor = sensor_data[0];
+
+			//wind sensor
+			let wind_power_sensor = sensor_data[0];
 			const wind_sensor = wind_power_sensor.split("=");
 			wind_power_sensor_value = parseInt(wind_sensor[1]);
-			console.log(wind_power_sensor);
+			// console.log(wind_power_sensor);
 			// console.log(wind_power_sensor_value);
+
+			//temperature sensor
+			let temperature_sensor = sensor_data[1];
+			const temp_sensor = temperature_sensor.split("=");
+			temperature_sensor_value = temp_sensor[1];
+			// console.log(temperature_sensor);
+			// console.log(temperature_sensor_value);
+
+			//moisture_sensor
+			let moisture_sensor = sensor_data[2];
+			const humidity_sensor = moisture_sensor.split("=");
+			moisture_sensor_value = humidity_sensor[1];
+			// console.log(moisture_sensor);
+			// console.log('test');
+			// console.log(moisture_sensor_value);
+
+			storage.registerTemperatureSample(frame.remote64,(temperature_sensor_value + "%"));
+			storage.registerMoistureSample(frame.remote64,(moisture_sensor_value + "%"));
+
 
 			if ( wind_power_sensor_value >= 15){
 				// console.log('ouragan ne pas sortir');
@@ -110,6 +125,8 @@ xbeeAPI.parser.on("data", function (frame) {
 				// console.log('vent_faible');
 				storage.registerWindGaugeSample(frame.remote64,'Wind_weak')
 			}
+
+
 			break;
 		case C.FRAME_TYPE.NODE_IDENTIFICATION:
 			console.log("NODE_IDENTIFICATION");
