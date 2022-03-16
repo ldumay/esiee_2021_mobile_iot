@@ -105,7 +105,7 @@ xbeeAPI.parser.on("data", function (frame) {
 			// console.log('test');
 			// console.log(moisture_sensor_value);
 
-			storage.registerTemperatureSample(frame.remote64,(temperature_sensor_value + "%"));
+			storage.registerTemperatureSample(frame.remote64,(temperature_sensor_value + "°C"));
 			storage.registerMoistureSample(frame.remote64,(moisture_sensor_value + "%"));
 
 
