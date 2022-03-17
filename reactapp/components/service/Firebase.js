@@ -19,26 +19,40 @@ const firestore = getFirestore(app);
 class FirebaseService {
 
 	/**
-	 * Get a list of cities from your database 
+	 * Get a list of status from last station 
+	 * @return {Array}
 	 */
 	static async getWeatherStatus() {
 		let stationPath = 'WeatherStation'
 		let stationCol = collection(firestore, stationPath);
 		let stationSnapshot = await getDocs(stationCol);
 		let stationList = stationSnapshot.docs.map(station => station.data());
-		console.log('list', stationList);
 		let dataList = Array();
-		stationList.forEach((station) => {
-			let stationDataCol = collection(firestore, stationPath, station.address, 'PhotovoltaicSample');
-			let q = query(stationDataCol, orderBy('date', 'desc'), limit(1));
-			getDocs(q).then((stationDataSnapshot) => {
-				console.log('datasnap', stationDataSnapshot.docs);
-				let stationDataList = stationDataSnapshot.docs.map(value => value.data());
-				dataList.push(stationDataList);
-			}).finally(() => {
-				console.log(dataList);
-			});
-		});
+		for (let station of stationList) {
+			let stationDataCol = [
+				collection(firestore, stationPath, station.address, 'TemperatureSample'),
+				collection(firestore, stationPath, station.address, 'PhotovoltaicSample'),
+				collection(firestore, stationPath, station.address, 'RainSensorSample'),
+				collection(firestore, stationPath, station.address, 'MoistureSample'),
+				collection(firestore, stationPath, station.address, 'WindGaugeSample')
+			];
+			for (let dataCollection of stationDataCol) {
+				let q = query(dataCollection, orderBy('date', 'desc'), limit(1));
+				await getDocs(q).then((dataSnapshot) => {
+					if (dataSnapshot.docs.length > 0) {
+						let collectionName = dataCollection.path.slice(stationPath.length + station.address.length - dataCollection.path.length + 2);
+						let recordedDataList = dataSnapshot.docs.map(value => value.data());
+						return new Array(collectionName, recordedDataList);
+					}
+				}).then((dataArray) => {
+					if (dataArray !== undefined) {
+						dataList.push(dataArray);
+						console.log('add new data');
+					}
+				});
+			};
+		};
+		return dataList;
 	}
 }
 export default FirebaseService;
