@@ -40,9 +40,11 @@ void loop() {
   checkRunProgArduino();
   
   //Recupere la temperature et l'humidite du capteur et l'affiche sur le moniteur serie
-  Serial.print("temperature="+int(dht.readTemperature())+"&humidity="+int(dht.readHumidity()));
-  Serial.println("");
-
+  Serial.print("temperature=");
+  Serial.print(int(dht.readTemperature()));
+  Serial.print("&");
+  Serial.print("humidity=");
+  Serial.println(int(dht.readHumidity()));
   delay(10000);
 }
 
