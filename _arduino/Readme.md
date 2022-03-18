@@ -38,6 +38,8 @@
 - [YB - ARDUINO with XBEE- WIRELESS SETUP DEMO](https://www.youtube.com/watch?v=S0WTsiocpIs)
 - [Arduino sans fil grâce aux modules Xbee](https://www.redohm.fr/2015/03/communication-xbee/)
 
+![Arduino to XBEE](_readme_img/IMG_5503.jpg)
+
 ### 4 - [Capteur de humidité](https://tutoduino.fr/debuter/capteur-temperature/)
 
 #### debugg :
