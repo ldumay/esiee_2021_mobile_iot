@@ -49,6 +49,20 @@ Il s'agit d'un projet de station météo pour permettre la proposition de style 
 └── xbee_reseau
 ```
 
+## Devices utilisé
+
+- 1x Arduino Uno
+
+![image](docs/images/001_Arduino_Uno_1_Front.jpg)
+
+- 1x Arduino Mega
+
+![image](docs/images/002_Arduino_Mage_1_Front.jpg)
+
+- 3x XBee
+
+![image](docs/images/003_XBee.jpg)
+
 ## Arborescence complète
 
 ```

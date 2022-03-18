@@ -2,16 +2,6 @@
 
 ---
 
-## Modèle utilisé
-
-- 1x Arduino Uno
-![image](readme_img/001.jpg)
-
-## fichier projet ok :
-==> projet_ok
-
----
-
 ## Liens de téléchargement
 
 - [Arduino IDE](https://www.arduino.cc/en/Guide)
@@ -29,7 +19,7 @@
 
 - [Lecture d’un potentiomètre. Entrées analogiques d’Arduino.](https://ledisrupteurdimensionnel.com/arduino/lecture-potentiometre-entrees-analogiques-arduino/)
 
-![005_potentionmetre](_readme_img/005_potentionmetre.jpg)
+![005_potentionmetre](readme_img/005_potentionmetre.jpg)
 
 ### 3 - Arduino to XBEE : 
 
@@ -38,7 +28,7 @@
 - [YB - ARDUINO with XBEE- WIRELESS SETUP DEMO](https://www.youtube.com/watch?v=S0WTsiocpIs)
 - [Arduino sans fil grâce aux modules Xbee](https://www.redohm.fr/2015/03/communication-xbee/)
 
-![Arduino to XBEE](_readme_img/IMG_5503.jpg)
+![Arduino to XBEE](readme_img/IMG_5503.jpg)
 
 ### 4 - [Capteur de humidité](https://tutoduino.fr/debuter/capteur-temperature/)
 
