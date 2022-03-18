@@ -44,7 +44,7 @@ void loop() {
   Serial.print("&humidity="+int(dht.readHumidity()));
   Serial.println("");
 
-  delay(2000);
+  delay(10000);
 }
 
 //- - - - [Vérification du run avec la LED PIN 13] - - - -
