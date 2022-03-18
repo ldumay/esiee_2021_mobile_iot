@@ -59,6 +59,35 @@ serialport.on("open", function () {
 });
 
 
+function splitDataReceved(String_data){
+	// console.log(String_data);
+	let string_data_length = (String_data.match(/&/g) || []).length;
+	let clean_string = String_data.replace(/(\r\n|\n|\r)/gm, "");
+
+	// console.log(string_data_length);
+
+	let my_return_array = [];
+
+	if (string_data_length > 0){
+		my_split_array = clean_string.split('&');
+		// console.log(my_split_array);
+		
+		my_split_array.forEach(element => {
+		let my_element = element.split("=");
+		my_return_array[my_element[0]] = my_element[1];
+		});
+
+		console.log(my_return_array);
+		return my_return_array;
+	}
+	else{
+		let my_element = clean_string.split("=");
+		my_return_array[my_element[0]] = my_element[1];
+	}
+	console.log(my_return_array);
+	return my_return_array;
+}
+
 // - - [ Coordinator ] - -
 
 // All frames parsed by the XBee will be emitted here
@@ -78,54 +107,45 @@ xbeeAPI.parser.on("data", function (frame) {
 			let arduino_data = String.fromCharCode.apply(null, frame.data);
 			console.log(">> ZIGBEE_RECEIVE_PACKET >", arduino_data);
 			// console.log(arduino_data);
-			
-			//split the character string
-			const sensor_data = arduino_data.split('&');
-			//possition 0 = potentiomettre
+		
+			let my_return_array = splitDataReceved(arduino_data);
+			// console.log(my_return_array);
+			// console.log(my_return_array.hasOwnProperty("temperature"));
+			// console.log(my_return_array.hasOwnProperty("humidity"));
+			// console.log(my_return_array.hasOwnProperty("position"));
 
-			//wind sensor
-			let wind_power_sensor = sensor_data[0];
-			const wind_sensor = wind_power_sensor.split("=");
-			wind_power_sensor_value = parseInt(wind_sensor[1]);
-			// console.log(wind_power_sensor);
-			// console.log(wind_power_sensor_value);
+			if (my_return_array.hasOwnProperty("position")){
+				let wind_power_sensor_value = my_return_array["position"];
+
+				if ( wind_power_sensor_value >= 15){
+					// console.log('ouragan ne pas sortir');
+					storage.registerWindGaugeSample(frame.remote64,'Stay at home O.o')
+				}
+				else if ( wind_power_sensor_value > 10 && wind_power_sensor_value <= 15){
+					// console.log('vent_puissant');
+					storage.registerWindGaugeSample(frame.remote64,'Wind_strong')
+				}
+				else if ( wind_power_sensor_value > 5 && wind_power_sensor_value <= 10){
+					// console.log('vent_moyen');
+					storage.registerWindGaugeSample(frame.remote64,'Wind_medium')
+				}
+				else {
+					// console.log('vent_faible');
+					storage.registerWindGaugeSample(frame.remote64,'Wind_weak')
+				}
+			}
 
 			//temperature sensor
-			let temperature_sensor = sensor_data[1];
-			const temp_sensor = temperature_sensor.split("=");
-			temperature_sensor_value = temp_sensor[1];
-			// console.log(temperature_sensor);
-			// console.log(temperature_sensor_value);
+			if (my_return_array.hasOwnProperty("temperature")){
+				let temperature_sensor_value = my_return_array["temperature"];
+				storage.registerTemperatureSample(frame.remote64,(temperature_sensor_value + "°C"));
+			}
 
 			//moisture_sensor
-			let moisture_sensor = sensor_data[2];
-			const humidity_sensor = moisture_sensor.split("=");
-			moisture_sensor_value = humidity_sensor[1];
-			// console.log(moisture_sensor);
-			// console.log('test');
-			// console.log(moisture_sensor_value);
-
-			storage.registerTemperatureSample(frame.remote64,(temperature_sensor_value + "°C"));
-			storage.registerMoistureSample(frame.remote64,(moisture_sensor_value + "%"));
-
-
-			if ( wind_power_sensor_value >= 15){
-				// console.log('ouragan ne pas sortir');
-				storage.registerWindGaugeSample(frame.remote64,'Stay at home O.o')
+			if (my_return_array.hasOwnProperty("humidity")){
+				let moisture_sensor_value = my_return_array["humidity"];
+				storage.registerMoistureSample(frame.remote64,(moisture_sensor_value + "%"));
 			}
-			else if ( wind_power_sensor_value > 10 && wind_power_sensor_value <= 15){
-				// console.log('vent_puissant');
-				storage.registerWindGaugeSample(frame.remote64,'Wind_strong')
-			}
-			else if ( wind_power_sensor_value > 5 && wind_power_sensor_value <= 10){
-				// console.log('vent_moyen');
-				storage.registerWindGaugeSample(frame.remote64,'Wind_medium')
-			}
-			else {
-				// console.log('vent_faible');
-				storage.registerWindGaugeSample(frame.remote64,'Wind_weak')
-			}
-
 
 			break;
 		case C.FRAME_TYPE.NODE_IDENTIFICATION:
