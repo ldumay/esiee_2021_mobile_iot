@@ -1,9 +1,9 @@
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 export default function Title() {
 	return (
-		<div>
+		<View>
 			<Text>Dress for your weather</Text>
-		</div>
+		</View>
 	);
 }
