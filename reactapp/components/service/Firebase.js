@@ -47,7 +47,6 @@ class FirebaseService {
 				}).then((dataArray) => {
 					if (dataArray !== undefined) {
 						dataList.push(dataArray);
-						console.log('add new data');
 					}
 				});
 			};
