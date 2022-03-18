@@ -5,7 +5,7 @@
 ## Modèle utilisé
 
 - 1x Arduino Uno
-![image](_readme_img/001.jpg)
+![image](readme_img/001.jpg)
 
 ## fichier projet ok :
 ==> projet_ok
