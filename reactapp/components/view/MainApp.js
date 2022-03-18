@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
-import FirebaseService from '../service/Firebase';
-import ButtonPressed from './ButtonPressed';
+import Title from './Title';
+import ButtonUpdate from './ButtonUpdate';
 
 export default function MainApp() {
 	return (
 		<View style={styles.container}>
-			<Text>Test for my first App !</Text>
-			<ButtonPressed />
+			<Title />
+			<ButtonUpdate />
 		</View>
 	);
 }
