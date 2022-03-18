@@ -42,6 +42,13 @@ serialport.on("open", function () {
 	};
 	xbeeAPI.builder.write(frame_obj); //--> send AT Request
 
+	frame_obj = { // AT Request to be sent
+		type: C.FRAME_TYPE.REMOTE_AT_COMMAND_REQUEST,
+		destination64: "FFFFFFFFFFFFFFFF",
+		command: "JN",
+		commandParameter: [0x01],
+	};
+	xbeeAPI.builder.write(frame_obj); //--> send AT Request
 	// frame_obj = { // AT Request to be sent
 	// 	type: C.FRAME_TYPE.REMOTE_AT_COMMAND_REQUEST,
 	// 	destination64: "FFFFFFFFFFFFFFFF",
@@ -58,7 +65,7 @@ serialport.on("open", function () {
 	// xbeeAPI.builder.write(frame_obj); //--> send AT Request
 });
 
-
+// fonction split les données envoyer par l'arduino first split & and the second is =
 function splitDataReceved(String_data){
 	// console.log(String_data);
 	let string_data_length = (String_data.match(/&/g) || []).length;
@@ -154,25 +161,8 @@ xbeeAPI.parser.on("data", function (frame) {
 			break;
 		case C.FRAME_TYPE.ZIGBEE_IO_DATA_SAMPLE_RX:
 			console.log("ZIGBEE_IO_DATA_SAMPLE_RX")
-			// console.log(frame)
-			// console.log(frame.analogSamples.AD0)
-			// let destination = "AB51";
-			// let led_state = 0x00;
-			// if (frame.digitalSamples["DIO1"] == 1) {
-			// 	led_state = 0x05;
-			// }
-
-			// frame_obj = { // AT Request to be sent
-			// 	type: C.FRAME_TYPE.REMOTE_AT_COMMAND_REQUEST,
-			// 	destination16: destination,
-			// 	command: "D0",
-			// 	commandParameter: [led_state],
-			// };
-			// xbeeAPI.builder.write(frame_obj); //--> send AT Request
-
-			// storage.registerWeatherStationSample(frame.remote64,frame.digitalSamples)
-			console.log(frame)
-			// console.log(frame.analogSamples)
+		
+			console.log(frame.analogSamples)
 			
 			if (frame.analogSamples["AD1"] >= 450){
 			 storage.registerPhotovoltaicSample(frame.remote64,'sombre')
@@ -191,8 +181,6 @@ xbeeAPI.parser.on("data", function (frame) {
 				storage.registerRainSensorSample(frame.remote64,'no_rain')
 			}
 			
-
-
 			break;
 		case C.FRAME_TYPE.AT_COMMAND_RESPONSE:
 			console.log("COMMAND_RESPONSE");
