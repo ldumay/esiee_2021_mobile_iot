@@ -49,20 +49,7 @@ serialport.on("open", function () {
 		commandParameter: [0x01],
 	};
 	xbeeAPI.builder.write(frame_obj); //--> send AT Request
-	// frame_obj = { // AT Request to be sent
-	// 	type: C.FRAME_TYPE.REMOTE_AT_COMMAND_REQUEST,
-	// 	destination64: "FFFFFFFFFFFFFFFF",
-	// 	command: "D0",
-	// 	commandParameter: [0x00],
-	// };
-	// xbeeAPI.builder.write(frame_obj); //--> send AT Request
-	// frame_obj = { // AT Request to be sent
-	//   type: C.FRAME_TYPE.REMOTE_AT_COMMAND_REQUEST,
-	//   destination64: "0013A20041582EEE",
-	//   command: "D0",
-	//   commandParameter: [0x05],
-	// };
-	// xbeeAPI.builder.write(frame_obj); //--> send AT Request
+
 });
 
 // fonction split les données envoyer par l'arduino first split & and the second is =
