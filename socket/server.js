@@ -103,10 +103,6 @@ xbeeAPI.parser.on("data", function (frame) {
 			// console.log(arduino_data);
 		
 			let my_return_array = splitDataReceved(arduino_data);
-			// console.log(my_return_array);
-			// console.log(my_return_array.hasOwnProperty("temperature"));
-			// console.log(my_return_array.hasOwnProperty("humidity"));
-			// console.log(my_return_array.hasOwnProperty("position"));
 
 			if (my_return_array.hasOwnProperty("position")){
 				let wind_power_sensor_value = my_return_array["position"];
